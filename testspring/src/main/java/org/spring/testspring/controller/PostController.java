@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.spring.testspring.requset.PostCreate;
+import org.spring.testspring.service.PostService;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,17 +20,14 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class PostController {
     
-
-    // @GetMapping("/posts")
-    // public String test(){
-    //     return "testController Message";
-    // }
+    private final PostService postService;
 
     @PostMapping("/posts")
-    public Map<String,String> post(@RequestBody @Valid PostCreate params ) {
-
+    public Map<String,String> post(@RequestBody @Valid PostCreate request ) {
+        postService.write(request);
         return Map.of();
     }
 }
