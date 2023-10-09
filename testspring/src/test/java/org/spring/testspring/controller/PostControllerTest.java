@@ -22,11 +22,23 @@ public class PostControllerTest {
     void test() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\" : \"글 제목\" , \"content\" : \"글 내용\"}")  
-                              
+                        .content("{\"title\" : \"글 제목\" , \"content\" : \"글 내용\"}")
+
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("{}"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+    @Test
+    @DisplayName("post 요청시 title값은 필수다")
+    void test2() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.post("/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\" : null , \"content\" : \"글 내용\"}")
+
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("testController Message"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("타이틀을 입력해주세요"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
