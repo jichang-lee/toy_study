@@ -79,5 +79,5 @@ public class PostControllerTest {
         assertEquals("글 내용",post.getContent());
 
     }
-
+    //게시글 단건 조회
 }
