@@ -1,9 +1,6 @@
 package org.spring.testspring.requset;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.spring.testspring.domain.Post;
 
 import javax.validation.constraints.NotBlank;
@@ -11,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 @Getter
 @Setter
+@NoArgsConstructor
 public class PostCreate {
 
     @NotBlank(message = "타이틀을 입력해주세요")
