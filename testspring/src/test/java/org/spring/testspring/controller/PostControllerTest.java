@@ -114,4 +114,32 @@ public class PostControllerTest {
 
     }
     //게시글 단건 조회
+    @Test
+    @DisplayName("글 단건 조회")
+    void test4()throws Exception{
+        //given
+        Post post = Post.builder()
+                .title("글 제목")
+                .content("글 내용")
+                .build();
+        postRepository.save(post);
+        String json = objectMapper.writeValueAsString(post);
+        //expected
+        mockMvc.perform(get("/posts/{postId}",post.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value(post.getTitle()))
+                .andExpect(jsonPath("$.content").value(post.getContent()))
+                .andDo(print());
+
+
+
+
+    }
+
+
+
 }

@@ -10,10 +10,7 @@ import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.service.PostService;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,4 +37,10 @@ public class PostController {
     public void post(@RequestBody @Valid PostCreate request ) {
         postService.write(request);
     }
+
+    @GetMapping("/posts/{postId}")
+    public Post get(@PathVariable(name = "postId") Long id){
+       return postService.get(id);
+    }
+
 }
