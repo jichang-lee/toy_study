@@ -7,6 +7,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.requset.PostCreate;
+import org.spring.testspring.response.PostResponse;
 import org.spring.testspring.service.PostService;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -39,8 +40,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable(name = "postId") Long id){
-       return postService.get(id);
+    public PostResponse get(@PathVariable Long postId){
+       return postService.get(postId);
     }
 
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
+import org.spring.testspring.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -61,11 +62,13 @@ class PostServiceTest {
         postRepository.save(post);
 
         //when
-        Post findPost = postService.get(post.getId());
+        PostResponse postResponse = postService.get(post.getId());
+
         //then
         assertNotNull(post);
-        assertEquals("글 제목",post.getTitle());
-        assertEquals("글 내용",post.getContent());
+        assertEquals(1L,postResponse.getId());
+        assertEquals("글 제목",postResponse.getTitle());
+        assertEquals("글 내용",postResponse.getContent());
 
     }
 
