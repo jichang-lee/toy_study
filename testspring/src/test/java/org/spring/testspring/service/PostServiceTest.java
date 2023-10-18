@@ -12,6 +12,8 @@ import org.spring.testspring.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -69,6 +71,39 @@ class PostServiceTest {
         assertEquals(1L,postResponse.getId());
         assertEquals("글 제목",postResponse.getTitle());
         assertEquals("글 내용",postResponse.getContent());
+
+    }
+    @Test
+    @DisplayName("글 여려개 조회")
+    void test3 ()throws Exception{
+        // given
+        Post.builder()
+                .title("글 제목")
+                .content("글 내용")
+                .build();
+        postRepository.saveAll(List.of(
+                Post.builder()
+                        .title("글 제목")
+                        .content("글 내용")
+                        .build(),
+                Post.builder()
+                        .title("글 제목")
+                        .content("글 내용")
+                        .build()
+        ));
+
+//        Post post2=Post.builder()
+//                .title("글 제목")
+//                .content("글 내용")
+//                .build();
+//        postRepository.save(post2);
+
+        //when
+        List<PostResponse> postList = postService.getList();
+
+        //then
+        assertEquals(2L,postList.size());
+
 
     }
 

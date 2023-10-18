@@ -2,6 +2,7 @@ package org.spring.testspring.response;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.spring.testspring.domain.Post;
 
 
 /*
@@ -13,6 +14,12 @@ public class PostResponse {
     private Long id;
     private String title;
     private String content;
+
+    public PostResponse(Post post){
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+    }
 
     @Builder
     public PostResponse(Long id, String title, String content) {

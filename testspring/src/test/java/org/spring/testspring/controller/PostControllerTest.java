@@ -1,6 +1,7 @@
 package org.spring.testspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -136,10 +137,35 @@ public class PostControllerTest {
                 .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value(post.getContent()))
                 .andDo(print());
+    }
+    @Test
+    @DisplayName("글 단건 조회")
+    void test5()throws Exception{
+        //given
+        Post post1 = Post.builder()
+                .title("글 제목11111")
+                .content("글 내용")
+                .build();
+        postRepository.save(post1);
+
+        Post post2 = Post.builder()
+                .title("글 제목22222")
+                .content("글 내용")
+                .build();
+        postRepository.save(post2);
 
 
-
-
+        //expected
+        mockMvc.perform(get("/posts")
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(2)))
+                .andExpect(jsonPath("$.[0].id").value(post1.getId()))
+                .andExpect(jsonPath("$.[0].title").value(post1.getTitle()))
+                .andExpect(jsonPath("$.[0].content").value(post1.getContent()))
+                .andDo(print());
+        //page
     }
 
 
