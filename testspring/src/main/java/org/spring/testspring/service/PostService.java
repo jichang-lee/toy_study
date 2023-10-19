@@ -45,6 +45,13 @@ public class PostService {
        return postRepository.findAll().stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public void delete(Long postId){
+        PostResponse postResponse = get(postId);
+        postRepository.deleteById(postResponse.getId());
+
+//     return   postRepository.deleteById(postId);
 
     }
 }
