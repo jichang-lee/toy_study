@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.domain.PostEditor;
+import org.spring.testspring.exception.PostNotFound;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.requset.PostEdit;
@@ -38,7 +39,7 @@ public class PostService {
 
     public PostResponse get(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 글 ID"));
+                .orElseThrow(PostNotFound::new);
 
                 return    PostResponse.builder()
                                 .id(post.getId())
@@ -59,24 +60,22 @@ public class PostService {
     @Transactional
     public void edit(Long id, PostEdit postEdit){
        Post post = postRepository.findById(id)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 게시글입니다"));
+                .orElseThrow(PostNotFound::new);
 
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
         PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
                 .content(postEdit.getContent())
                 .build();
-
         post.edit(postEditor);
-
 //        post.edit(postEdit.getTitle() != null ? postEdit.getTitle() : post.getTitle()
 //                , postEdit.getContent() != null ? postEdit.getContent() : post.getContent());
     }
 
-    public void delete(Long postId){
-        PostResponse postResponse = get(postId);
-        postRepository.deleteById(postResponse.getId());
+    public void delete(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(PostNotFound::new);
 
-
+        postRepository.delete(post);
     }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.Post;
+import org.spring.testspring.exception.PostNotFound;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.requset.PostEdit;
@@ -23,6 +24,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.data.domain.Sort.Direction.DESC;
+
 
 @SpringBootTest
 class PostServiceTest {
@@ -155,8 +157,8 @@ class PostServiceTest {
         //then
         Post changePost = postRepository.findById(post.getId())
                 .orElseThrow(()-> new RuntimeException("지정한 게시글이 존재하지 않는다"+post.getId()));
-        Assertions.assertEquals("글 제목 수정",changePost.getTitle());
-        Assertions.assertEquals("글 내용",changePost.getContent());
+        assertEquals("글 제목 수정",changePost.getTitle());
+        assertEquals("글 내용",changePost.getContent());
 
 
 
@@ -183,9 +185,46 @@ class PostServiceTest {
         //then
         Post changePost = postRepository.findById(post.getId())
                 .orElseThrow(()-> new RuntimeException("지정한 게시글이 존재하지 않는다"+post.getId()));
-        Assertions.assertEquals("글 제목",changePost.getTitle());
-        Assertions.assertEquals("글 내용 수정",changePost.getContent());
+        assertEquals("글 제목",changePost.getTitle());
+        assertEquals("글 내용 수정",changePost.getContent());
 
+    }
+    @Test
+    @DisplayName("글 삭제")
+    void test7 ()throws Exception{
+        // given
+        Post post= Post.builder()
+                .title("글 제목")
+                .content("글 내용")
+                .build();
+        postRepository.save(post);
+
+        //when
+        postService.delete(post.getId());
+
+        //then
+        assertEquals(0,postRepository.count());
+
+    }
+
+    @Test
+    @DisplayName("id 조회 실패 케이스(예외처리 테스트)")
+    void test8()throws Exception{
+        // given
+        Post post=Post.builder()
+                .title("글 제목")
+                .content("글 내용")
+                .build();
+        postRepository.save(post);
+
+        //expected
+            assertThrows(PostNotFound.class, () -> {
+                postService.get(post.getId() + 1L);
+        });
+//        Assertions.assertThrows(NullPointerException.class,()->{
+//            postService.get(post.getId() + 1L);
+//        },"잘못된 예외처리 입니다.");
+//        Assertions.assertEquals("존재하지 않는 게시글 입니다.",e.getMessage());
 
 
 
