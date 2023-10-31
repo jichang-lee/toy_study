@@ -11,10 +11,16 @@ import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @SpringBootTest
 class PostServiceTest {
@@ -73,36 +79,57 @@ class PostServiceTest {
         assertEquals("글 내용",postResponse.getContent());
 
     }
-    @Test
-    @DisplayName("글 여려개 조회")
-    void test3 ()throws Exception{
-        // given
-        Post.builder()
-                .title("글 제목")
-                .content("글 내용")
-                .build();
-        postRepository.saveAll(List.of(
-                Post.builder()
-                        .title("글 제목")
-                        .content("글 내용")
-                        .build(),
-                Post.builder()
-                        .title("글 제목")
-                        .content("글 내용")
-                        .build()
-        ));
-
-//        Post post2=Post.builder()
+//    @Test
+//    @DisplayName("글 여려개 조회") -> Page 변경 예정
+//    void test3 ()throws Exception{
+//        // given
+//        Post.builder()
 //                .title("글 제목")
 //                .content("글 내용")
 //                .build();
-//        postRepository.save(post2);
+//        postRepository.saveAll(List.of(
+//                Post.builder()
+//                        .title("글 제목")
+//                        .content("글 내용")
+//                        .build(),
+//                Post.builder()
+//                        .title("글 제목")
+//                        .content("글 내용")
+//                        .build()
+//        ));
+//
+//        //when
+//        List<PostResponse> postList = postService.getList();
+//
+//        //then
+//        assertEquals(2L,postList.size());
+
+//    }
+
+    @Test
+    @DisplayName("글 1page 조회")
+    void test4 ()throws Exception{
+        // given
+        List<Post> requestPosts = IntStream.range(1,31)
+                        .mapToObj(i->{
+                         return    Post.builder()
+                                    .title("글 제목 " + i)
+                                    .content("글 내용 " + i)
+                                    .build();
+                        }).collect(Collectors.toList());
+
+        postRepository.saveAll(requestPosts);
+
+        Pageable pageable = PageRequest.of(0,5, DESC,"id");
 
         //when
-        List<PostResponse> postList = postService.getList();
+        List<PostResponse> postList = postService.getList(pageable);
 
         //then
-        assertEquals(2L,postList.size());
+        assertEquals(5L,postList.size());
+        assertEquals("글 제목 30",postList.get(0).getTitle());
+        assertEquals("글 제목 26",postList.get(4).getTitle());
+
 
 
     }

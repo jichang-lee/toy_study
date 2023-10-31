@@ -6,6 +6,9 @@ import org.spring.testspring.domain.Post;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.response.PostResponse;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,8 +44,10 @@ public class PostService {
 
     }
 
-    public List<PostResponse> getList() {
-       return postRepository.findAll().stream()
+    public List<PostResponse> getList(Pageable pageable) {
+//        Pageable pageable = PageRequest.of(page , 5,Sort.by(Sort.Direction.DESC,"id"));
+
+       return postRepository.findAll(pageable).stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
