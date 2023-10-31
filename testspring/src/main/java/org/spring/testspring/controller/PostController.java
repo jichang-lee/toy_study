@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import org.spring.testspring.domain.Post;
+import org.spring.testspring.exception.InvalidRequest;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.requset.PostEdit;
 import org.spring.testspring.requset.PostSearch;
@@ -40,6 +41,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request ) {
+        request.validate();
         postService.write(request);
     }
 

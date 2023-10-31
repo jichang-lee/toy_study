@@ -1,17 +1,16 @@
 package org.spring.testspring.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.spring.testspring.exception.InvalidRequest;
+import org.spring.testspring.exception.MasterException;
 import org.spring.testspring.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
@@ -32,5 +31,22 @@ public class ExceptionController {
         }
 
 
+
+    @ExceptionHandler(MasterException.class)
+    public ResponseEntity<ErrorResponse> postNotFound(MasterException e){
+       int statusCode = e.getStatusCode();
+
+        ErrorResponse response = ErrorResponse.builder()
+                .code(String.valueOf(statusCode))
+                .message(e.getMessage())
+                .validation(e.getValidation())
+                .build();
+
+
+    return  ResponseEntity.status(statusCode)
+                .body(response);
+
+
+    }
 
 }

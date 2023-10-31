@@ -2,6 +2,7 @@ package org.spring.testspring.requset;
 
 import lombok.*;
 import org.spring.testspring.domain.Post;
+import org.spring.testspring.exception.InvalidRequest;
 
 import javax.validation.constraints.NotBlank;
 
@@ -23,6 +24,14 @@ public class PostCreate {
         this.title = title;
         this.content = content;
     }
+
+    public void validate(){
+        if(title.contains("탈모")){
+            throw new InvalidRequest("title","제목에 탈모를 포함할 수  없습니다.");
+        }
+
+    }
+
 
     // @Builder 장점
     //  - 가독성에 좋다

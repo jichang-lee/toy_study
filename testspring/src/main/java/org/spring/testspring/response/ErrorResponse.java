@@ -1,5 +1,6 @@
 package org.spring.testspring.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 
 @Getter
+//@JsonInclude(value = JsonInclude.Include.NON_EMPTY) 비어있는 값은 X -> 개인적으로 선호하지 않아서 주석
 public class ErrorResponse {
 
     private final String code;
@@ -26,9 +28,10 @@ public class ErrorResponse {
     private Map<String,String> validation = new HashMap<>();
 
     @Builder
-    public ErrorResponse(String code, String message) {
+    public ErrorResponse(String code, String message ,Map<String,String> validation) {
         this.code = code;
         this.message = message;
+        this.validation = validation;
     }
 
     public void addValidation(String filedName, String errorMessage){

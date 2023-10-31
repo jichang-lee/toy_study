@@ -108,7 +108,7 @@ public class PostControllerTest {
         //when
         mockMvc.perform(post("/posts")
                         .contentType(APPLICATION_JSON)
-                        .content("{\"title\" : \"글 제목\" , \"content\" : \"글 내용\"}")
+                        .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -238,5 +238,36 @@ public class PostControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("존재하지 않는 게시글 조회 (예외처리 테스트)")
+    void test9() throws Exception{
+        //expected
+        mockMvc.perform(delete("/posts/{postId}",2L)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 저장 시 title에 탈모는 포함시킬 수 없다")
+    void test10() throws Exception {
+        //given
+        PostCreate request = PostCreate.builder()
+                .title("나는 탈모입니다")
+                .content("글 내용")
+                .build();
+        String json = objectMapper.writeValueAsString(request);
+
+        //when
+        mockMvc.perform(post("/posts")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+
+    }
+
 
 }
