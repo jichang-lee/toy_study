@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
+import org.spring.testspring.requset.PostEdit;
+import org.spring.testspring.requset.PostSearch;
 import org.spring.testspring.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -110,7 +112,7 @@ class PostServiceTest {
     @DisplayName("글 1page 조회")
     void test4 ()throws Exception{
         // given
-        List<Post> requestPosts = IntStream.range(1,31)
+        List<Post> requestPosts = IntStream.range(0,20)
                         .mapToObj(i->{
                          return    Post.builder()
                                     .title("글 제목 " + i)
@@ -120,15 +122,70 @@ class PostServiceTest {
 
         postRepository.saveAll(requestPosts);
 
-        Pageable pageable = PageRequest.of(0,5, DESC,"id");
+       PostSearch postSearch= PostSearch.builder()
+                                        .page(1)
+                                        .build();
 
         //when
-        List<PostResponse> postList = postService.getList(pageable);
+        List<PostResponse> postList = postService.getList(postSearch);
 
         //then
-        assertEquals(5L,postList.size());
-        assertEquals("글 제목 30",postList.get(0).getTitle());
-        assertEquals("글 제목 26",postList.get(4).getTitle());
+        assertEquals(10L,postList.size());
+        assertEquals("글 제목 19",postList.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test5 ()throws Exception{
+        // given
+           Post post= Post.builder()
+                    .title("글 제목")
+                    .content("글 내용")
+                    .build();
+            postRepository.save(post);
+
+       PostEdit postEdit= PostEdit.builder()
+                        .title("글 제목 수정")
+                        .content(post.getContent())
+                        .build();
+
+        //when
+        postService.edit(post.getId(),postEdit);
+
+        //then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(()-> new RuntimeException("지정한 게시글이 존재하지 않는다"+post.getId()));
+        Assertions.assertEquals("글 제목 수정",changePost.getTitle());
+        Assertions.assertEquals("글 내용",changePost.getContent());
+
+
+
+
+    }
+    @Test
+    @DisplayName("글 제목 수정시 null 로 보낼 때")
+    void test6 ()throws Exception{
+        // given
+           Post post= Post.builder()
+                    .title("글 제목")
+                    .content("글 내용")
+                    .build();
+            postRepository.save(post);
+
+       PostEdit postEdit= PostEdit.builder()
+                        .title(null)
+                        .content("글 내용 수정")
+                        .build();
+
+        //when
+        postService.edit(post.getId(),postEdit);
+
+        //then
+        Post changePost = postRepository.findById(post.getId())
+                .orElseThrow(()-> new RuntimeException("지정한 게시글이 존재하지 않는다"+post.getId()));
+        Assertions.assertEquals("글 제목",changePost.getTitle());
+        Assertions.assertEquals("글 내용 수정",changePost.getContent());
+
 
 
 

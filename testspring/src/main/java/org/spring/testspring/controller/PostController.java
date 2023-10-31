@@ -7,6 +7,8 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.requset.PostCreate;
+import org.spring.testspring.requset.PostEdit;
+import org.spring.testspring.requset.PostSearch;
 import org.spring.testspring.response.PostResponse;
 import org.spring.testspring.service.PostService;
 import org.springframework.data.domain.Pageable;
@@ -47,8 +49,13 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponse> getList(Pageable pageable){
-        return postService.getList(pageable);
+    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
+        return postService.getList(postSearch);
+    }
+
+    @PatchMapping("/posts/{postId}")
+    public void edit (@PathVariable Long postId, @RequestBody @Valid PostEdit postEdit){
+        postService.edit(postId,postEdit);
     }
 
 }

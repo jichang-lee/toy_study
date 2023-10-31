@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
+import org.spring.testspring.requset.PostEdit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -145,37 +146,34 @@ public class PostControllerTest {
                 .andDo(print());
     }
 
+
+
     @Test
-    @DisplayName("글 단건 조회")
+    @DisplayName("글 1페이지 조회")
     void test5() throws Exception {
         //given
-        Post post1 = Post.builder()
-                .title("글 제목11111")
-                .content("글 내용")
-                .build();
-        postRepository.save(post1);
+        List<Post> requestPosts = IntStream.range(1, 31)
+                .mapToObj(i -> Post.builder()
+                        .title("글 제목 " + i)
+                        .content("글 내용 " + i)
+                        .build())
+                .collect(Collectors.toList());
 
-        Post post2 = Post.builder()
-                .title("글 제목22222")
-                .content("글 내용")
-                .build();
-        postRepository.save(post2);
-
+        postRepository.saveAll(requestPosts);
 
         //expected
-        mockMvc.perform(get("/posts")
-                        .contentType(APPLICATION_JSON)
-                )
+        mockMvc.perform(get("/posts?page=1&size=10")
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(2)))
-                .andExpect(jsonPath("$.[0].id").value(post1.getId()))
-                .andExpect(jsonPath("$.[0].title").value(post1.getTitle()))
-                .andExpect(jsonPath("$.[0].content").value(post1.getContent()))
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
+                .andExpect(jsonPath("$[0].id").value(30))
+                .andExpect(jsonPath("$[0].title").value("글 제목 30"))
+                .andExpect(jsonPath("$[0].content").value("글 내용 30"))
                 .andDo(print());
     }
 
     @Test
-    @DisplayName("글 1페이지 조회")
+    @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다")
     void test6() throws Exception {
         //given
         List<Post> requestPosts = IntStream.range(1, 31)
@@ -188,13 +186,37 @@ public class PostControllerTest {
         postRepository.saveAll(requestPosts);
 
         //expected
-        mockMvc.perform(get("/posts?page=1&sort=id,desc")
+        mockMvc.perform(get("/posts?page=0&size=10")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(5)))
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
                 .andExpect(jsonPath("$[0].id").value(30))
                 .andExpect(jsonPath("$[0].title").value("글 제목 30"))
                 .andExpect(jsonPath("$[0].content").value("글 내용 30"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 수정")
+    void test7() throws Exception {
+        //given
+        Post post= Post.builder()
+                .title("글 제목")
+                .content("글 내용")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit= PostEdit.builder()
+                .title("글 제목 수정")
+                .content(post.getContent())
+                .build();
+
+
+        //expected
+        mockMvc.perform(patch("/posts/{postId}" , post.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(postEdit)))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 
