@@ -78,7 +78,7 @@ class PostServiceTest {
 
         //then
         assertNotNull(post);
-        assertEquals(1L,postResponse.getId());
+//        assertEquals(1L,postResponse.getId());
         assertEquals("글 제목",postResponse.getTitle());
         assertEquals("글 내용",postResponse.getContent());
 

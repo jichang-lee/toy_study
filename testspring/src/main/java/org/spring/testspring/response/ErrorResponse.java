@@ -34,8 +34,8 @@ public class ErrorResponse {
         this.validation = validation;
     }
 
-    public void addValidation(String filedName, String errorMessage){
-        this.validation.put(filedName,errorMessage);
+    public void addValidation(String fieldName, String errorMessage){
+        this.validation.put(fieldName,errorMessage);
     }
 
 
