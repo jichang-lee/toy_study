@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.spring.testspring.main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.spring.testspring.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/testspring.main.iml" filepath="$PROJECT_DIR$/.idea/modules/testspring.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/testspring.test.iml" filepath="$PROJECT_DIR$/.idea/modules/testspring.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/호돌이인강.iml" filepath="$PROJECT_DIR$/.idea/호돌이인강.iml" />
