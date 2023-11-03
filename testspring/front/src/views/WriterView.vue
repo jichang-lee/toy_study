@@ -32,11 +32,12 @@ const content = ref("")
 
 
 const write = ()=>{
-    axios.post("http://localhost:8099/posts",{
+    axios.post("/api/posts",{
      title: title.value,
      content : content.value   
     })
 }
+
 </script>
 
 <style>
