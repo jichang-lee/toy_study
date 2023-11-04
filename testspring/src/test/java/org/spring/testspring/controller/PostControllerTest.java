@@ -49,27 +49,6 @@ public class PostControllerTest {
     }
 
 
-    @Test
-    @DisplayName("글 등록")
-    void test() throws Exception {
-
-//        PostCreate request = new PostCreate("글 제목","글 내용");
-        PostCreate request = PostCreate.builder()
-                .title("글 제목")
-                .content("글 내용")
-                .build();
-
-        String json = objectMapper.writeValueAsString(request);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().string(""))
-                .andDo(print());
-    }
 
 //    @Test
 //    @DisplayName("post 요청시 title값은 필수다")
@@ -95,7 +74,7 @@ public class PostControllerTest {
 
 
     @Test
-    @DisplayName("post 요청시 db저장")
+    @DisplayName("글 작성 요청시 db저장")
     void test3() throws Exception {
         //given
         PostCreate request = PostCreate.builder()
