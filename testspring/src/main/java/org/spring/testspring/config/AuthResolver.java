@@ -1,7 +1,12 @@
 package org.spring.testspring.config;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.spring.testspring.config.data.UserSession;
 import org.spring.testspring.domain.Session;
 import org.spring.testspring.exception.UnAuthorized;
@@ -22,7 +27,9 @@ import java.util.Optional;
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
     private final SessionRepository sessionRepository;
+    private final AppConfig appConfig;
 
+    private static final String KEY = "9lWyi+432AUQSVBCmmXMrYWIM7j88f5FrmCF1HoA7sk=";
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().equals(UserSession.class);
@@ -30,27 +37,25 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpServletRequest servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        if(servletRequest==null){
-            log.error("servletRequest null");
-            throw new UnAuthorized();
-        }
-        Cookie[] cookies = servletRequest.getCookies();
+        log.info("appConfig=====>{}",appConfig);
+        String jws = webRequest.getHeader("Authorization");
 
-        if(cookies.length==0){
-            log.error("쿠키가 없음");
+        if (jws == null && jws.equals("")){
             throw new UnAuthorized();
         }
 
-        String accessToken = cookies[0].getValue();
+        byte[] decodeKey = Base64.decodeBase64(KEY);
 
-        Session session = sessionRepository.findByAccessToken(accessToken)
-                    .orElseThrow(UnAuthorized::new);
-
-
-
-
-        return new UserSession(session.getUser().getId());
+        try{
+            Jws<Claims> claimsJws = Jwts.parser().
+                    setSigningKey(decodeKey).
+                    build().
+                    parseClaimsJws(jws);
+            String userID = claimsJws.getBody().getSubject();
+            return new UserSession(Long.parseLong(userID));
+        }catch (JwtException e){
+            throw new UnAuthorized();
+        }
 
     }
 }
