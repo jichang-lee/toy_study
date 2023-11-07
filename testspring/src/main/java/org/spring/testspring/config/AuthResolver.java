@@ -29,7 +29,7 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
     private final SessionRepository sessionRepository;
     private final AppConfig appConfig;
 
-    private static final String KEY = "9lWyi+432AUQSVBCmmXMrYWIM7j88f5FrmCF1HoA7sk=";
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().equals(UserSession.class);
@@ -44,11 +44,11 @@ public class AuthResolver implements HandlerMethodArgumentResolver {
             throw new UnAuthorized();
         }
 
-        byte[] decodeKey = Base64.decodeBase64(KEY);
+
 
         try{
             Jws<Claims> claimsJws = Jwts.parser().
-                    setSigningKey(decodeKey).
+                    setSigningKey(appConfig.getJwtKey()).
                     build().
                     parseClaimsJws(jws);
             String userID = claimsJws.getBody().getSubject();

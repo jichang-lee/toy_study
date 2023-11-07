@@ -11,6 +11,7 @@ import org.spring.testspring.domain.User;
 import org.spring.testspring.repository.SessionRepository;
 import org.spring.testspring.repository.UserRepository;
 import org.spring.testspring.requset.Login;
+import org.spring.testspring.requset.Signup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -174,6 +175,22 @@ class AuthControllerTst {
                         .contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andDo(MockMvcResultHandlers.print());
+    }
+    @Test
+    @DisplayName("회원가입")
+    void test6 () throws  Exception{
+        Signup signup = Signup.builder()
+                .name("이지창")
+                .email("jichang@naver.com")
+                .password("1234")
+                .build();
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 

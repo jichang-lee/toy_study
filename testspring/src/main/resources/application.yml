@@ -26,8 +26,4 @@ spring:
 
 
 jichang:
-  hello:
-    - "a"
-    - "b"
-    - "c"
-    - "d"
+  jwt-key: "9lWyi+432AUQSVBCmmXMrYWIM7j88f5FrmCF1HoA7sk="

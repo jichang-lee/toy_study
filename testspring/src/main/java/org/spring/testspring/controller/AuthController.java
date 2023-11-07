@@ -5,7 +5,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.spring.testspring.config.AppConfig;
 import org.spring.testspring.requset.Login;
+import org.spring.testspring.requset.Signup;
 import org.spring.testspring.response.SessionResponse;
 import org.spring.testspring.service.AuthService;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.Date;
 
 
 @RestController
@@ -27,8 +30,8 @@ import java.util.Base64;
 public class AuthController {
 
     private final AuthService authService;
+    private final AppConfig appConfig;
 
-    private final String key = "9lWyi+432AUQSVBCmmXMrYWIM7j88f5FrmCF1HoA7sk=";
     //Cookie
 //    @PostMapping("/auth/login")
 //    public ResponseEntity<Object> login(@RequestBody Login login){
@@ -52,12 +55,22 @@ public class AuthController {
         Long userPK = authService.signIn(login);
 
 //        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        SecretKey secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(key));
+        SecretKey secretKey = Keys.hmacShaKeyFor(appConfig.getJwtKey());
 
-        String jws = Jwts.builder().setSubject(userPK.toString()).signWith(secretKey).compact();
+        String jws = Jwts.builder()
+                .setSubject(userPK.toString())
+                .signWith(secretKey)
+                .setIssuedAt(new Date())
+                .compact();
 
        return new SessionResponse(jws);
 
     }
+
+    @PostMapping("/auth/signup")
+    public void signUp(@RequestBody Signup signup){
+        authService.signup(signup);
+    }
+
 
 }
