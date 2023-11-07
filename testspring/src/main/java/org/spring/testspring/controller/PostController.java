@@ -41,7 +41,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/test")
+    @GetMapping("/foo")
     public Long test(UserSession userSession){
         log.info(">>>{}",userSession.getId());
         return userSession.getId();
