@@ -4,7 +4,7 @@ import lombok.*;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.exception.InvalidRequest;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @ToString
 @Getter

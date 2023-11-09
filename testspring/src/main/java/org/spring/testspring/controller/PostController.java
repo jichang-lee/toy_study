@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController
@@ -42,12 +42,11 @@ public class PostController {
 
 
     @PostMapping("/posts")
-    public void post(@RequestBody @Valid PostCreate request, @RequestParam String authorization) {
-        if (authorization.equals("jichang")) {
+    public void post(@RequestBody @Valid PostCreate request) {
+
             request.validate();
             postService.write(request);
 
-        }
     }
 
     @GetMapping("/posts/{postId}")

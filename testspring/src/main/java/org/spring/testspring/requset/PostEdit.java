@@ -2,8 +2,8 @@ package org.spring.testspring.requset;
 
 import lombok.*;
 
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Getter
 @Setter
