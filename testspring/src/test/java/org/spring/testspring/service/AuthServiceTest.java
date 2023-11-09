@@ -14,11 +14,13 @@ import org.spring.testspring.requset.Login;
 import org.spring.testspring.requset.Signup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.rmi.AlreadyBoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 class AuthServiceTest {
 
@@ -27,6 +29,9 @@ class AuthServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void clean(){
@@ -38,22 +43,22 @@ class AuthServiceTest {
     @DisplayName("회원가입 성공")
     void test1(){
 
-        //given
+
         Signup signup = Signup.builder()
                 .name("이지창")
                 .email("jichang@naver.com")
                 .password("1234")
                 .build();
 
-        //when
         authService.signup(signup);
 
-        //then
         Assertions.assertEquals(1,userRepository.count());
 
         User user = userRepository.findAll().iterator().next();
+
         Assertions.assertEquals("jichang@naver.com",user.getEmail());
-        Assertions.assertNotEquals("1234",user.getPassword()); //<- 개선 방법 찾아보기
+//        Assertions.assertNotEquals("1234",user.getPassword()); //<- 개선 방법 찾아보기
+        Assertions.assertTrue(passwordEncoder.matches("1234", user.getPassword())); //after
         Assertions.assertEquals("이지창",user.getName());
 
     }
@@ -84,7 +89,7 @@ class AuthServiceTest {
     @DisplayName("로그인 성공")
     void test3(){
 
-        PasswordEncoder passwordEncoder = new PasswordEncoder();
+
         String encrypt = passwordEncoder.encrypt("1234");
         //given
         User saveUser = User.builder()
@@ -110,7 +115,7 @@ class AuthServiceTest {
     void test4(){
 
         //given
-        PasswordEncoder passwordEncoder = new PasswordEncoder();
+
         String encrypt = passwordEncoder.encrypt("1234");
         //given
         User saveUser = User.builder()

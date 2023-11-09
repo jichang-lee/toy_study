@@ -22,7 +22,7 @@ public class AuthService {
 
 
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
 
     @Transactional
@@ -32,7 +32,6 @@ public class AuthService {
                 .orElseThrow(()-> new InvalidSigningInformation());
 
         user.addSession();
-        PasswordEncoder passwordEncoder = new PasswordEncoder();
 
         boolean matches = passwordEncoder.matches(login.getPassword(), user.getPassword());
         if(!matches){
@@ -47,7 +46,6 @@ public class AuthService {
         if(byEmail.isPresent()){
             throw new AlreadyExistsEmailException();
         }
-        PasswordEncoder passwordEncoder = new PasswordEncoder();
 
         String encodePassword = passwordEncoder.encrypt(signup.getPassword());
 
