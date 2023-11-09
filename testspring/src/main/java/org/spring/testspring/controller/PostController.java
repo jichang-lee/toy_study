@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
-import org.spring.testspring.config.data.UserSession;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.exception.InvalidRequest;
 import org.spring.testspring.requset.PostCreate;
@@ -40,12 +39,6 @@ public class PostController {
 
 
     private final PostService postService;
-
-    @GetMapping("/foo")
-    public Long test(UserSession userSession){
-        log.info(">>>{}",userSession.getId());
-        return userSession.getId();
-    }
 
 
     @PostMapping("/posts")
