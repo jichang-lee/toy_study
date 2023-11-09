@@ -1,6 +1,7 @@
 package org.spring.testspring.service;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.testspring.crypto.PasswordEncoder;
 import org.spring.testspring.domain.Session;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.AlreadyExistsEmailException;
@@ -27,9 +28,16 @@ public class AuthService {
     @Transactional
     public Long signIn(Login login){
 
-        User user = userRepository.findByEmailAndPassword(login.getEmail(), login.getPassword())
-                .orElseThrow(InvalidSigningInformation::new);
-        Session session = user.addSession();
+        User user = userRepository.findByEmail(login.getEmail())
+                .orElseThrow(()-> new InvalidSigningInformation());
+
+        user.addSession();
+        PasswordEncoder passwordEncoder = new PasswordEncoder();
+
+        boolean matches = passwordEncoder.matches(login.getPassword(), user.getPassword());
+        if(!matches){
+            throw new InvalidSigningInformation();
+        }
 
         return user.getId();
     }
@@ -39,14 +47,9 @@ public class AuthService {
         if(byEmail.isPresent()){
             throw new AlreadyExistsEmailException();
         }
+        PasswordEncoder passwordEncoder = new PasswordEncoder();
 
-        SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
-                        16,
-                        8,
-                        1,
-                        32,
-                        64);
-        String encodePassword = encoder.encode(signup.getPassword());
+        String encodePassword = passwordEncoder.encrypt(signup.getPassword());
 
         User user = User.builder()
                 .name(signup.getName())
