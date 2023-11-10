@@ -70,6 +70,10 @@ dependencies {
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.session:spring-session-jdbc'
+
 	implementation group: 'org.springframework.security', name: 'spring-security-crypto'
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
 	compileOnly 'org.projectlombok:lombok'

@@ -23,7 +23,9 @@ spring:
       pageable:
         one-indexed-parameters: true
         default-page-size: 5
-
+  session:
+    jdbc:
+      initialize-schema: always
 
 jichang:
   jwt-key: "9lWyi+432AUQSVBCmmXMrYWIM7j88f5FrmCF1HoA7sk="

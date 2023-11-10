@@ -1,12 +1,11 @@
 package org.spring.testspring.service;
 
 import lombok.RequiredArgsConstructor;
-import org.spring.testspring.crypto.PasswordEncoder;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.AlreadyExistsEmailException;
-import org.spring.testspring.exception.InvalidSigningInformation;
 import org.spring.testspring.repository.UserRepository;
 import org.spring.testspring.requset.Signup;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,7 +25,7 @@ public class AuthService {
         }
 
 
-        String encrypt = passwordEncoder.encrypt(signup.getPassword());
+        String encrypt = passwordEncoder.encode(signup.getPassword());
 
         User user = User.builder()
                 .name(signup.getName())
