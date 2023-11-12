@@ -9,6 +9,7 @@ import org.spring.testspring.domain.Post;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.PostNotFound;
 import org.spring.testspring.repository.PostRepository;
+import org.spring.testspring.repository.UserRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.requset.PostEdit;
 import org.spring.testspring.requset.PostSearch;
@@ -38,11 +39,15 @@ class PostServiceTest {
     private PostRepository postRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void clean(){
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 
@@ -55,6 +60,8 @@ class PostServiceTest {
                 .password("1234")
                 .name("JichangLee")
                 .build();
+
+        userRepository.save(user);
 
 
         PostCreate postCreate = PostCreate.builder()

@@ -25,7 +25,7 @@ public class EmailPasswordAuthFilter extends AbstractAuthenticationProcessingFil
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-//        EmailPassword emailPassword = objectMapper.readValue(request.getInputStream(), EmailPassword.class);
+
         Login login = objectMapper.readValue(request.getInputStream(), Login.class);
 
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
@@ -36,11 +36,5 @@ public class EmailPasswordAuthFilter extends AbstractAuthenticationProcessingFil
         return this.getAuthenticationManager().authenticate(token);
     }
 
-//    @Getter
-//    private static class EmailPassword{
-//        private String email;
-//        private String password;
-//
-//    }
 
 }

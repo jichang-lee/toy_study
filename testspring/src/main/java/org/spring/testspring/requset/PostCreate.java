@@ -2,6 +2,7 @@ package org.spring.testspring.requset;
 
 import lombok.*;
 import org.spring.testspring.domain.Post;
+import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.InvalidRequest;
 
 import jakarta.validation.constraints.NotBlank;
@@ -19,10 +20,12 @@ public class PostCreate {
     private String content;
 
 
+
     @Builder
-    public PostCreate(String title, String content) {
+    public PostCreate(String title, String content , User user) {
         this.title = title;
         this.content = content;
+
     }
 
 //    public void validate(){

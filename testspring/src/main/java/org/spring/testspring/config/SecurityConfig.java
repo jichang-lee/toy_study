@@ -104,10 +104,13 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository){
-        return username -> {
-            User user = userRepository.findByEmail(username)
-                    .orElseThrow(()-> new UsernameNotFoundException(username + "을 찾을 수 없습니다"));
-            return new UserPrincipal(user);
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                User user = userRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(username + "을 찾을 수 없습니다"));
+                return new UserPrincipal(user);
+            }
         };
     }
 

@@ -67,7 +67,7 @@ public class PostController {
         postService.edit(postId, postEdit);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') && hasPermission(#postId,'POST','DELETE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') && hasPermission(#postId, 'POST', 'DELETE')")
     @DeleteMapping("/posts/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);

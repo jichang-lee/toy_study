@@ -1,12 +1,15 @@
 package org.spring.testspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.spring.testspring.config.MasterMockUser;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.repository.PostRepository;
+import org.spring.testspring.repository.UserRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -43,8 +46,16 @@ public class PostControllerDocTest {
     private PostRepository postRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
+    @AfterEach
+    void clean() {
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("글 단건 조회")
@@ -72,7 +83,7 @@ public class PostControllerDocTest {
                 ));
     }
     @Test
-    @WithMockUser(username = "jichang@naver.com" ,roles = {"ADMIN"} )
+    @MasterMockUser
     @DisplayName("글 등록")
     void test2() throws Exception {
 
