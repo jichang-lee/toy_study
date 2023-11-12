@@ -25,12 +25,12 @@ public class PostCreate {
         this.content = content;
     }
 
-    public void validate(){
-        if(title.contains("탈모")){
-            throw new InvalidRequest("title","제목에 탈모를 포함할 수  없습니다.");
-        }
-
-    }
+//    public void validate(){
+//        if(title.contains("탈모")){
+//            throw new InvalidRequest("title","제목에 탈모를 포함할 수  없습니다.");
+//        }
+//
+//    }
 
 
     // @Builder 장점

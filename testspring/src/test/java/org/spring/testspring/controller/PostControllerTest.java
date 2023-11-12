@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -49,32 +50,9 @@ public class PostControllerTest {
     }
 
 
-
-//    @Test
-//    @DisplayName("post 요청시 title값은 필수다")
-//    void test2() throws Exception {
-//
-//        PostCreate request = PostCreate.builder()
-//                .title("")
-//                .content("글 내용")
-//                .build();
-//
-//        String json = objectMapper.writeValueAsString(request);
-//
-//        mockMvc.perform(post("/posts")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(json)
-//                )
-//                .andExpect(status().isBadRequest())
-//                .andExpect(jsonPath("$.code").value("400"))
-//                .andExpect(jsonPath("$.message").value("잘못된 요청입니다.(errorController)"))
-//                .andExpect(jsonPath("$.validation.title").value("타이틀을 입력해주세요"))
-//                .andDo(print());
-//    }
-
-
     @Test
-    @DisplayName("글 작성 요청시 db저장")
+    @WithMockUser(username = "jichang@naver.com" ,roles = {"ADMIN"} )
+    @DisplayName("글 작성 성공")
     void test3() throws Exception {
         //given
         PostCreate request = PostCreate.builder()
@@ -176,6 +154,7 @@ public class PostControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "jichang@naver.com" ,roles = {"ADMIN"} )
     @DisplayName("게시글 수정")
     void test7() throws Exception {
         //given
@@ -200,6 +179,7 @@ public class PostControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "jichang@naver.com" ,roles = {"ADMIN"} )
     @DisplayName("게시글 삭제")
     void test8() throws Exception {
         //given
@@ -222,31 +202,13 @@ public class PostControllerTest {
     @DisplayName("존재하지 않는 게시글 조회 (예외처리 테스트)")
     void test9() throws Exception{
         //expected
-        mockMvc.perform(delete("/posts/{postId}",2L)
+        mockMvc.perform(get("/posts/{postId}",2L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
 
-    @Test
-    @DisplayName("게시글 저장 시 title에 탈모는 포함시킬 수 없다")
-    void test10() throws Exception {
-        //given
-        PostCreate request = PostCreate.builder()
-                .title("나는 탈모입니다")
-                .content("글 내용")
-                .build();
-        String json = objectMapper.writeValueAsString(request);
 
-        //when
-        mockMvc.perform(post("/posts")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isBadRequest())
-                .andDo(print());
-
-    }
 
 
 }

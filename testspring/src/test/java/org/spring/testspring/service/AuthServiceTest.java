@@ -11,6 +11,7 @@ import org.spring.testspring.repository.UserRepository;
 import org.spring.testspring.requset.Signup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
@@ -35,7 +36,6 @@ class AuthServiceTest {
     @Test
     @DisplayName("회원가입 성공")
     void test1(){
-
 
         Signup signup = Signup.builder()
                 .name("이지창")

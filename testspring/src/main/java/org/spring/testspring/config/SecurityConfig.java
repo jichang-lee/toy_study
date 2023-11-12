@@ -10,6 +10,7 @@ import org.spring.testspring.config.filter.EmailPasswordAuthFilter;
 import org.spring.testspring.config.handler.Http401Handler;
 import org.spring.testspring.config.handler.Http403Handler;
 import org.spring.testspring.config.handler.LoginFailHandler;
+import org.spring.testspring.config.handler.LoginSuccessHandler;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,6 +44,7 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@EnableMethodSecurity
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -59,21 +62,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         return http
                 .authorizeHttpRequests()
-                    .requestMatchers("/auth/login").permitAll()
-                    .requestMatchers("/auth/signup").permitAll()
-                    .requestMatchers("/user").hasRole("USER")
-                    .requestMatchers("/admin").hasRole("ADMIN")
-//                    .requestMatchers("/admin")
-//                        .access(new WebExpressionAuthorizationManager("hasRole('ADMIN') AND hasAuthority('WRITE')"))
-                    .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                    .loginPage("/auth/login")
-//                    .loginProcessingUrl("/auth/login")
-//                    .usernameParameter("username")
-//                    .passwordParameter("password")
-//                    .defaultSuccessUrl("/")
-//                    .failureHandler(new LoginFailHandler(objectMapper))
+//                    .requestMatchers("/login").permitAll()
+//                    .requestMatchers("/auth/signup").permitAll()
+//                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(emailPasswordAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
@@ -92,7 +84,7 @@ public class SecurityConfig {
     public EmailPasswordAuthFilter emailPasswordAuthFilter(){
         EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login",objectMapper);
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 

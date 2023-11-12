@@ -13,10 +13,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/auth/login")
-    public String login(){
-        return "로그인 페이지 테스트";
-    }
+
 
     @PostMapping("/auth/signup")
     public void signup(@RequestBody Signup signup ){
