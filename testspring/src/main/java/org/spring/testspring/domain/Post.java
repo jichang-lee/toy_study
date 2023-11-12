@@ -1,11 +1,11 @@
 package org.spring.testspring.domain;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -25,6 +25,8 @@ public class Post {
     @JoinColumn
     private User user;
 
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(String title, String content , User user) {
@@ -47,4 +49,8 @@ public class Post {
        return this.user.getId();
     }
 
+    public void addComment(Comment comment) {
+        comment.setPost(this);
+        this.comments.add(comment);
+    }
 }

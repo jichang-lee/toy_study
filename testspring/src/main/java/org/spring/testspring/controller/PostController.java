@@ -1,29 +1,20 @@
 package org.spring.testspring.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import org.spring.testspring.config.UserPrincipal;
-import org.spring.testspring.domain.Post;
-import org.spring.testspring.exception.InvalidRequest;
-import org.spring.testspring.requset.PostCreate;
-import org.spring.testspring.requset.PostEdit;
-import org.spring.testspring.requset.PostSearch;
+import org.spring.testspring.requset.post.PostCreate;
+import org.spring.testspring.requset.post.PostEdit;
+import org.spring.testspring.requset.post.PostSearch;
 import org.spring.testspring.response.PostResponse;
 import org.spring.testspring.service.PostService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Slf4j

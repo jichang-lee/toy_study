@@ -1,4 +1,4 @@
-package org.spring.testspring.requset;
+package org.spring.testspring.requset.post;
 
 import lombok.*;
 import org.spring.testspring.domain.Post;

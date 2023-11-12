@@ -1,4 +1,4 @@
-package org.spring.testspring.repository;
+package org.spring.testspring.repository.post;
 
 import org.spring.testspring.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;

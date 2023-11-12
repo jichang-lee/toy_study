@@ -1,4 +1,4 @@
-package org.spring.testspring.repository;
+package org.spring.testspring.repository.user;
 
 import org.spring.testspring.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

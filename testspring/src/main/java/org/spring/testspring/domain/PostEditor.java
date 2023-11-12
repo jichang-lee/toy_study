@@ -1,6 +1,5 @@
 package org.spring.testspring.domain;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

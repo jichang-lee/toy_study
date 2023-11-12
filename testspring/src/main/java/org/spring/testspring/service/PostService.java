@@ -7,21 +7,17 @@ import org.spring.testspring.domain.PostEditor;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.PostNotFound;
 import org.spring.testspring.exception.UserNotFound;
-import org.spring.testspring.repository.PostRepository;
-import org.spring.testspring.repository.UserRepository;
-import org.spring.testspring.requset.PostCreate;
-import org.spring.testspring.requset.PostEdit;
-import org.spring.testspring.requset.PostSearch;
+import org.spring.testspring.repository.post.PostRepository;
+import org.spring.testspring.repository.user.UserRepository;
+import org.spring.testspring.requset.post.PostCreate;
+import org.spring.testspring.requset.post.PostEdit;
+import org.spring.testspring.requset.post.PostSearch;
 import org.spring.testspring.response.PostResponse;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j

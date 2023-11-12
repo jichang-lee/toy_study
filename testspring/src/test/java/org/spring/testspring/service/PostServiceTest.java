@@ -1,32 +1,26 @@
 package org.spring.testspring.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.PostNotFound;
-import org.spring.testspring.repository.PostRepository;
-import org.spring.testspring.repository.UserRepository;
-import org.spring.testspring.requset.PostCreate;
-import org.spring.testspring.requset.PostEdit;
-import org.spring.testspring.requset.PostSearch;
-import org.spring.testspring.requset.Signup;
+import org.spring.testspring.repository.post.PostRepository;
+import org.spring.testspring.repository.user.UserRepository;
+import org.spring.testspring.requset.post.PostCreate;
+import org.spring.testspring.requset.post.PostEdit;
+import org.spring.testspring.requset.post.PostSearch;
 import org.spring.testspring.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 
 @SpringBootTest

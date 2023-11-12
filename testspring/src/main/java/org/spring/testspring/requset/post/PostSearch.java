@@ -1,4 +1,4 @@
-package org.spring.testspring.requset;
+package org.spring.testspring.requset.post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

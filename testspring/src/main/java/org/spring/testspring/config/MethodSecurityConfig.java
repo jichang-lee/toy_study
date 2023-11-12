@@ -1,7 +1,7 @@
 package org.spring.testspring.config;
 
 import lombok.RequiredArgsConstructor;
-import org.spring.testspring.repository.PostRepository;
+import org.spring.testspring.repository.post.PostRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;

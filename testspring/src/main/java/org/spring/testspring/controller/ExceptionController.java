@@ -30,8 +30,6 @@ public class ExceptionController {
             return response;
         }
 
-
-
     @ExceptionHandler(MasterException.class)
     public ResponseEntity<ErrorResponse> postNotFound(MasterException e){
        int statusCode = e.getStatusCode();
@@ -42,11 +40,22 @@ public class ExceptionController {
                 .validation(e.getValidation())
                 .build();
 
-
     return  ResponseEntity.status(statusCode)
                 .body(response);
 
+    }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> exception(Exception e){
+        log.error("예외 발생=!!==>" , e);
+
+        ErrorResponse response = ErrorResponse.builder()
+                .code(String.valueOf(500))
+                .message(e.getMessage())
+                .build();
+
+        return  ResponseEntity.status(500)
+                .body(response);
     }
 
 }

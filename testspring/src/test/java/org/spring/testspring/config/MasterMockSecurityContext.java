@@ -1,7 +1,7 @@
 package org.spring.testspring.config;
 
 import org.spring.testspring.domain.User;
-import org.spring.testspring.repository.UserRepository;
+import org.spring.testspring.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

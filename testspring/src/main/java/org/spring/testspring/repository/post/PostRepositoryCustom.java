@@ -1,7 +1,7 @@
-package org.spring.testspring.repository;
+package org.spring.testspring.repository.post;
 
 import org.spring.testspring.domain.Post;
-import org.spring.testspring.requset.PostSearch;
+import org.spring.testspring.requset.post.PostSearch;
 
 import java.util.List;
 

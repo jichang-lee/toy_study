@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.exception.PostNotFound;
-import org.spring.testspring.repository.PostRepository;
+import org.spring.testspring.repository.post.PostRepository;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 

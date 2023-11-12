@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.AlreadyExistsEmailException;
 
-import org.spring.testspring.repository.UserRepository;
+import org.spring.testspring.repository.user.UserRepository;
 import org.spring.testspring.requset.Signup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
