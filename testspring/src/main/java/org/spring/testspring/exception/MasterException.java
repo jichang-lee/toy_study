@@ -14,9 +14,9 @@ public abstract class MasterException extends RuntimeException{
         super(message);
     }
 
-    public MasterException(String message, Throwable cause) {
-        super(message, cause);
-    }
+//    public MasterException(String message, Throwable cause) {
+//        super(message, cause);
+//    }
 
     public abstract int getStatusCode();
 

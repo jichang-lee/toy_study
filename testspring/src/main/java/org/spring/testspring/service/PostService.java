@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.domain.PostEditor;
+import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.PostNotFound;
+import org.spring.testspring.exception.UserNotFound;
 import org.spring.testspring.repository.PostRepository;
+import org.spring.testspring.repository.UserRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.requset.PostEdit;
 import org.spring.testspring.requset.PostSearch;
@@ -27,9 +30,15 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public void write(PostCreate postCreate){
+    public void write(Long userId ,PostCreate postCreate){
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
         Post post = Post.builder()
+                .user(user)
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
                 .build();

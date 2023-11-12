@@ -44,7 +44,6 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -62,9 +61,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         return http
                 .authorizeHttpRequests()
-//                    .requestMatchers("/login").permitAll()
-//                    .requestMatchers("/auth/signup").permitAll()
-//                    .anyRequest().authenticated()
                     .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(emailPasswordAuthFilter(), UsernamePasswordAuthenticationFilter.class)

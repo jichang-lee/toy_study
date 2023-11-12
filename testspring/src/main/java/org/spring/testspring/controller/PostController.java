@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
+import org.spring.testspring.config.UserPrincipal;
 import org.spring.testspring.domain.Post;
 import org.spring.testspring.exception.InvalidRequest;
 import org.spring.testspring.requset.PostCreate;
@@ -15,6 +16,7 @@ import org.spring.testspring.service.PostService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -43,9 +45,9 @@ public class PostController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/posts")
-    public void post(@RequestBody @Valid PostCreate request) {
-//            request.validate();
-            postService.write(request);
+    public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
+
+            postService.write(userPrincipal.getUserId(),request);
     }
 
 
@@ -65,7 +67,7 @@ public class PostController {
         postService.edit(postId, postEdit);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') && hasPermission(#postId,'POST','DELETE')")
     @DeleteMapping("/posts/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);

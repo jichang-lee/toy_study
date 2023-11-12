@@ -6,11 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.spring.testspring.domain.Post;
+import org.spring.testspring.domain.User;
 import org.spring.testspring.exception.PostNotFound;
 import org.spring.testspring.repository.PostRepository;
 import org.spring.testspring.requset.PostCreate;
 import org.spring.testspring.requset.PostEdit;
 import org.spring.testspring.requset.PostSearch;
+import org.spring.testspring.requset.Signup;
 import org.spring.testspring.response.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,13 +50,20 @@ class PostServiceTest {
     @DisplayName("글 작성")
     void test1 (){
         // given
+        User user = User.builder()
+                .email("jichang@naver.com")
+                .password("1234")
+                .name("JichangLee")
+                .build();
+
+
         PostCreate postCreate = PostCreate.builder()
                 .title("글 제목")
                 .content("글 내용")
                 .build();
 
         //when
-        postService.write(postCreate);
+        postService.write(1L, postCreate);
 
         //then
         assertEquals(1L,postRepository.count());
