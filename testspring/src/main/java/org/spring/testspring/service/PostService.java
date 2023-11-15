@@ -55,7 +55,6 @@ public class PostService {
     }
 
     public List<PostResponse> getList(PostSearch postSearch) {
-//        Pageable pageable = PageRequest.of(page , 5,Sort.by(Sort.Direction.DESC,"id"));
 
        return postRepository.getList(postSearch).stream()
                .map(PostResponse::new)
